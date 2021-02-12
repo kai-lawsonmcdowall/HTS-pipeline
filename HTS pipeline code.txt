@@ -1,0 +1,29 @@
+! /bin/bash
+#$ -l h_rt=2:00:00
+#$ -l h_vmem=16G
+#$ -pe smp 8
+#$ -cwd
+#$ -j y
+#$ -V
+
+
+time_start=$SECONDS
+
+for i in /nobackup/bs20kjlm/raw_data/* ; do
+
+sample=$(basename "$i")
+dir_sample=${sample%%.*}
+echo "Processing sample ${sample}"
+
+mkdir -p /nobackup/bs20kjlm/Results/$dir_sample/{Fastqc,Trims,Salmon}
+
+/nobackup/leedsomics_workshop/tools/FastQC/fastqc -o /nobackup/bs20kjlm/Results/$dir_sample/Fastqc -threads 4 -dir /nobackup/bs20kjlm/raw_data/ $i
+
+/nobackup/leedsomics_workshop/tools/TrimGalore-0.5.0/trim_galore --path_to_cutadapt /nobackup/leedsomics_workshop/tools/Python-2.7.11/Python-2.7.11/bin/cutadapt -o /nobackup/bs20kjlm/Results/$dir_sample/Trims $i
+
+/nobackup/leedsomics_workshop/tools/salmon-latest_linux_x86_64/bin/salmon quant -i /nobackup/bs20kjlm/Salmon/salmon_index -l A -r /nobackup/bs20kjlm/Results/$dir_sample/Trims/"$dir_sample"_trimmed.fq.gz --validateMappings -o /nobackup/bs20kjlm/Results/$dir_sample/Salmon
+
+done
+
+echo "Time taken: $(((SECONDS - time_start) / 60)) minutes."
+[bs20kjlm@login2.arc3 bs20kjlm]$ 
