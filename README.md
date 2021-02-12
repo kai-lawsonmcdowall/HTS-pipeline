@@ -1,1 +1,1 @@
-# HTSpipeline
+# A project exploring the differential gene expression between Venetoclax resistant and sensitive mantle cell lymphoma derived cell lines (HBL-2). The data was taken from the paper "BCL2 Amplicon Loss and Transcriptional Remodeling Drives ABT-199 Resistance in B Cell Lymphoma Models" published by Zhao et al., 2016. this project focus focused on RNA-seq data and defining the differences between the transcripomtes of the sensitive "parental cell lines and the derived resistant cells.
